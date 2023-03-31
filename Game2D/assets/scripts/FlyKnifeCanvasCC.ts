@@ -1,6 +1,6 @@
-import { _decorator, Component, Node, director, Sprite, Scene, SceneAsset, EventTouch, v2, v3, UITransform } from 'cc';
+import { _decorator, Component, Node, director, Sprite, Scene, SceneAsset, EventTouch, v2, v3, UITransform, tween, Vec3, view } from 'cc';
 import { STSteeredVehicle } from './STSteeredVehicle';
-import { STButtonNode, STSpriteNode } from './STUI';
+import { STButtonNode, STNode, STSpriteNode } from './STUI';
 const { ccclass, property } = _decorator;
 
 const _temp_v2 = v2()
@@ -8,11 +8,13 @@ const _temp_v3 = v3()
 
 @ccclass('FlyKnifeCanvasCC')
 export class FlyKnifeCanvasCC extends Component {
-    
+
     private spriteBGNode: STSpriteNode = new STSpriteNode()
     private targetNode: STSpriteNode = new STSpriteNode()
-    private bulletNode: STSpriteNode = new STSpriteNode()
-    private seeker: STSteeredVehicle
+    private knifeNode: STSpriteNode = new STSpriteNode()
+    private knifeContainerNode: STNode = new STNode()
+    private knifeNodeArray = [];
+    canThrow = true;
 
     __preload() {
         this.node.addChild(this.spriteBGNode)
@@ -24,7 +26,7 @@ export class FlyKnifeCanvasCC extends Component {
         this.spriteBGNode.st_colorHexString = "#CBFF8D"
         this.spriteBGNode.loadDir("home/default_sprite")
 
-        console.debug("ActionArriveCanvasCC __preload")
+        console.debug("FlyKnifeCanvasCC __preload")
         const backBtnNode: STButtonNode = new STButtonNode()
         backBtnNode.loadDir("back")
         backBtnNode.st_left = 20
@@ -32,35 +34,98 @@ export class FlyKnifeCanvasCC extends Component {
         backBtnNode.on(Node.EventType.TOUCH_END, this.onClickBack, this)
         this.node.addChild(backBtnNode)
 
-        this.node.addChild(this.targetNode)
-        this.targetNode.loadDir("actionArrive/target")
+        this.knifeNode.loadDir("flyknife/knife")
+        this.knifeNode.setPosition(0, -500)
+        this.knifeContainerNode.addChild(this.knifeNode)
+        this.node.addChild(this.knifeContainerNode)
 
-        this.node.addChild(this.bulletNode)
-        this.bulletNode.loadDir("actionArrive/bullet")
-        this.seeker = this.bulletNode.addComponent(STSteeredVehicle).getComponent(STSteeredVehicle)
+        this.targetNode.loadDir("flyknife/target")
+        this.targetNode.setPosition(0, 300)
+        this.node.addChild(this.targetNode)
+
+
     }
 
     onLoad() {
-        console.debug("ActionArriveCanvasCC onLoad")
+        console.debug("FlyKnifeCanvasCC onLoad")
+        this.node.on(Node.EventType.TOUCH_START, this._touchStart, this);
     }
 
     start() {
-        console.debug("ActionArriveCanvasCC start")
-        this.node.on(Node.EventType.TOUCH_START, this.onTouchEvent, this)
-        this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchEvent, this)
-        this.node.on(Node.EventType.TOUCH_END, this.onTouchEvent, this)
-    }
-    private onTouchEvent(evt: EventTouch) {
-        evt.getUILocation(_temp_v2)
-        _temp_v3.set(_temp_v2.x, _temp_v2.y, 0)
-        this.node.getComponent(UITransform)?.convertToNodeSpaceAR(_temp_v3, _temp_v3)
-        this.targetNode.setPosition(_temp_v3)
+        console.debug("FlyKnifeCanvasCC start")
     }
 
-    update() {
-        _temp_v2.set(this.targetNode.position.x, this.targetNode.position.y)
-        this.seeker.arrive(_temp_v2)
-        this.seeker.fixedUpdate()
+    update(deltaTime: number) {
+        this.targetNode.angle = (this.targetNode.angle + 3) % 360;
+
+        this.knifeNodeArray.forEach((element) => {
+            element.angle = (element.angle + 3) % 360;
+
+            //半径
+            let r = this.targetNode.st_width / 2;
+            //弧度
+            let rad = (Math.PI * (element.angle - 90)) / 180;
+            //Math.cos(弧度)
+            element.setPosition(
+                this.targetNode.position.x + r * Math.cos(rad),
+                this.targetNode.position.y + r * Math.sin(rad)
+            );
+        });
+    }
+
+    onDestroy() {
+        this.node.off(Node.EventType.TOUCH_START, this._touchStart, this);
+    }
+
+    _touchStart() {
+        if (!this.canThrow) {
+            return;
+        }
+
+        this.canThrow = false;
+
+        tween()
+            .target(this.knifeNode)
+            .to(0.1, { position: new Vec3(0, 50) })
+            .call(() => {
+                var isHit = false;
+                var gap = 15;
+
+                this.knifeNodeArray.forEach((element) => {
+                    if (element.angle < gap || 360 - element.angle < gap) {
+                        isHit = true;
+                    }
+                });
+
+                if (isHit) {
+                    tween()
+                        .target(this.knifeNode)
+                        .to(0.4, {
+                            position: new Vec3(
+                                200,
+                                -view.getFrameSize().height -
+                                this.knifeNode.st_height
+                            ),
+                            angle: 120,
+                        })
+                        .call(() => {
+                            this.knifeNode.angle = 0;
+                            this.knifeNode.setPosition(0, -300);
+                            this.canThrow = true;
+                        })
+                        .start();
+                } else {
+                    const knifeNode: STSpriteNode = new STSpriteNode()
+                    knifeNode.loadDir("flyknife/knife")
+                    knifeNode.setPosition(this.knifeNode.position);
+                    this.knifeContainerNode.addChild(knifeNode);
+                    this.knifeNodeArray.push(knifeNode);
+
+                    this.knifeNode.setPosition(0, -300);
+                    this.canThrow = true;
+                }
+            })
+            .start();
     }
 
     onClickBack() {
