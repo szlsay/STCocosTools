@@ -21,22 +21,22 @@ export class STNode extends Node {
      * @zh
      * 内容尺寸。
      */
-    get contentSize(): Readonly<math.Size> {
+    get st_contentSize(): Readonly<math.Size> {
         return this.transform.contentSize
     }
-    set contentSize(value: Readonly<math.Size>) {
+    set st_contentSize(value: Readonly<math.Size>) {
         this.transform.setContentSize(value)
     }
-    get width(): number {
+    get st_width(): number {
         return this.transform.width
     }
-    set width(value: number) {
+    set st_width(value: number) {
         this.transform.width = value
     }
-    get height(): number {
+    get st_height(): number {
         return this.transform.height
     }
-    set height(value: number) {
+    set st_height(value: number) {
         this.transform.height = value
     }
     /**
@@ -46,27 +46,89 @@ export class STNode extends Node {
      * @zh
      * 锚点位置。
      */
-    get anchorPoint(): Readonly<math.Vec2> {
+    get st_anchorPoint(): Readonly<math.Vec2> {
         this.transform.setAnchorPoint
         return this.transform.anchorPoint
     }
-    set anchorPoint(value: Readonly<math.Vec2>) {
+    set st_anchorPoint(value: Readonly<math.Vec2>) {
         this.transform.anchorPoint = value
     }
     setAnchorPoint(point: math.Vec2 | Readonly<math.Vec2> | number, y?: number): void {
         this.transform.setAnchorPoint(point, y)
     }
-    get anchorX(): number {
+    get st_anchorX(): number {
         return this.transform.anchorX
     }
-    set anchorX(value: number) {
+    set st_anchorX(value: number) {
         this.transform.anchorX = value
     }
-    get anchorY(): number {
+    get st_anchorY(): number {
         return this.transform.anchorY
     }
-    set anchorY(value: number) {
+    set st_anchorY(value: number) {
         this.transform.anchorY = value
+    }
+
+    /**
+     * @en
+     * The margins between the top of this node and the top of parent node,
+     * the value can be negative, Only available in 'isAlignTop' open.
+     *
+     * @zh
+     * 本节点顶边和父节点顶边的距离，可填写负值，只有在 isAlignTop 开启时才有作用。
+     */
+    get st_top(): number {
+        return this.widget.top
+    }
+    set st_top(value: number) {
+        this.widget.isAlignTop = true
+        this.widget.top = value
+    }
+    /**
+     * @en
+     * The margins between the bottom of this node and the bottom of parent node,
+     * the value can be negative, Only available in 'isAlignBottom' open.
+     *
+     * @zh
+     * 本节点底边和父节点底边的距离，可填写负值，只有在 isAlignBottom 开启时才有作用。
+     */
+    get st_bottom(): number {
+        return this.widget.bottom
+    }
+    set st_bottom(value: number) {
+        this.widget.isAlignBottom = true
+        this.widget.bottom = value
+    }
+
+    /**
+    * @en
+    * The margins between the left of this node and the left of parent node,
+    * the value can be negative, Only available in 'isAlignLeft' open.
+    *
+    * @zh
+    * 本节点左边和父节点左边的距离，可填写负值，只有在 isAlignLeft 开启时才有作用。
+    */
+    get st_left(): number {
+        return this.widget.left
+    }
+    set st_left(value: number) {
+        this.widget.isAlignLeft = true
+        this.widget.left = value
+    }
+    /**
+     * @en
+     * The margins between the right of this node and the right of parent node,
+     * the value can be negative, Only available in 'isAlignRight' open.
+     *
+     * @zh
+     * 本节点右边和父节点右边的距离，可填写负值，只有在 isAlignRight 开启时才有作用。
+     */
+    get st_right(): number {
+        return this.widget.right
+    }
+    set st_right(value: number) {
+        this.widget.isAlignRight = true
+        this.widget.right = value
     }
 
     constructor(name?: string) {
@@ -163,10 +225,10 @@ export class STLabelNode extends STNode {
      * @zh
      * 标签显示的文本内容。
      */
-    get string(): string {
+    get st_string(): string {
         return this.label.string
     }
-    set string(value: string) {
+    set st_string(value: string) {
         this.label.string = value
     }
 
@@ -188,13 +250,13 @@ export class STLabelNode extends STNode {
      * @en Main color for rendering, it normally multiplies with texture color.
      * @zh 渲染颜色，一般情况下会和贴图颜色相乘。
      */
-    get color(): Readonly<math.Color> {
+    get st_color(): Readonly<math.Color> {
         return this.label.color
     }
-    set color(value: Readonly<math.Color>) {
+    set st_color(value: Readonly<math.Color>) {
         this.label.color = value
     }
-    set colorHexString(value: string) {
+    set st_colorHexString(value: string) {
         this.label.color = new Color(value)
     }
     /**
@@ -204,11 +266,11 @@ export class STLabelNode extends STNode {
      * @zh
      * 文本字体大小。
      */
-    get fontSize(): number {
+    get st_fontSize(): number {
         return this.label.fontSize
     }
 
-    set fontSize(value: number) {
+    set st_fontSize(value: number) {
         this.label.fontSize = value
     }
     /**
@@ -224,10 +286,10 @@ export class STLabelNode extends STNode {
      * outline.color = new Color(0.5, 0.3, 0.7, 1.0);
      * ```
      */
-    get colorOutline(): Readonly<math.Color> {
+    get st_colorOutline(): Readonly<math.Color> {
         return this.labelOutline.color
     }
-    set colorOutline(value: Readonly<math.Color>) {
+    set st_colorOutline(value: Readonly<math.Color>) {
         this.labelOutline.color = value
     }
     /**
@@ -242,17 +304,17 @@ export class STLabelNode extends STNode {
      * outline.width = 3;
      * ```
      */
-    get widthOutline(): number {
+    get st_widthOutline(): number {
         return this.labelOutline.width
     }
-    set widthOutline(value: number) {
+    set st_widthOutline(value: number) {
         this.labelOutline.width = value
     }
     constructor(name?: string) {
         super(name);
         this.label = this.addComponent(Label).getComponent(Label)
         this.labelOutline = this.addComponent(LabelOutline).getComponent(LabelOutline)
-        this.widthOutline = 0
+        this.st_widthOutline = 0
     }
 }
 
@@ -271,10 +333,10 @@ export class STButtonNode extends STSpriteNode {
      * @zh
      * 按钮状态改变时过渡方式。
      */
-    get transition(): __private._cocos_ui_button__Transition {
+    get st_transition(): __private._cocos_ui_button__Transition {
         return this.button.transition
     }
-    set transition(value: __private._cocos_ui_button__Transition) {
+    set st_transition(value: __private._cocos_ui_button__Transition) {
         this.button.transition = value
     }
     /**
@@ -284,10 +346,10 @@ export class STButtonNode extends STSpriteNode {
     * @zh
     * 颜色过渡和缩放过渡时所需时间。
     */
-    get duration(): number {
+    get st_duration(): number {
         return this.button.duration
     }
-    set duration(value: number) {
+    set st_duration(value: number) {
         this.button.duration = value
     }
     /**
@@ -302,10 +364,10 @@ export class STButtonNode extends STSpriteNode {
      * 注意：不建议 zoomScale 的值小于 1, 否则缩放后如果触摸点在触摸区域外, 则会触发 touchCancel 事件。
      * 如果你需要这么做，你应该把 target 设置为另一个背景节点，而不是按钮节点。
      */
-    get zoomScale(): number {
+    get st_zoomScale(): number {
         return this.button.zoomScale
     }
-    set zoomScale(value: number) {
+    set st_zoomScale(value: number) {
         this.button.zoomScale = value
     }
 
@@ -333,10 +395,10 @@ export class STSpriteLTRNode extends STSpriteNode {
      * @zh
      * 容器内左边距，只会在一个布局方向上生效。
      */
-    get paddingLeft(): number {
+    get st_paddingLeft(): number {
         return this.layout.paddingLeft
     }
-    set paddingLeft(value: number) {
+    set st_paddingLeft(value: number) {
         this.layout.paddingLeft = value
     }
     /**
@@ -346,10 +408,10 @@ export class STSpriteLTRNode extends STSpriteNode {
      * @zh
      * 容器内右边距，只会在一个布局方向上生效。
      */
-    get paddingRight(): number {
+    get st_paddingRight(): number {
         return this.layout.paddingRight
     }
-    set paddingRight(value: number) {
+    set st_paddingRight(value: number) {
         this.layout.paddingRight = value
     }
 
@@ -390,10 +452,10 @@ export class STSliderNode extends STNode {
      * @zh
      * 当前进度值，该数值的区间是 0-1 之间。
      */
-    get progress(): number {
+    get st_progress(): number {
         return this.slider.progress
     }
-    set progress(value: number) {
+    set st_progress(value: number) {
         this.slider.progress = value
     }
 
