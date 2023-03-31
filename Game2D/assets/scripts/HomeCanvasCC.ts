@@ -48,6 +48,7 @@ export class HomeCanvasCC extends Component {
         layoutNode.layout.spacingX = 20
         layoutNode.layout.spacingY = 20
         this.node.addChild(layoutNode)
+
         for (let index = 0; index < this.sceneNames.length; index++) {
             layoutNode.addChild(this.initBtn(this.sceneNames[index]))
         }
