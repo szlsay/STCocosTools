@@ -1,5 +1,5 @@
-import { _decorator, Component, Node, Sprite, resources, SpriteFrame, Color } from 'cc';
-import { STButtonNode, STLabelNode, STSpriteNode } from './STUI';
+import { _decorator, Component, Node, Sprite, resources, SpriteFrame, Color, Layout, EventTouch, director } from 'cc';
+import { STButtonNode, STLabelNode, STLayoutNode, STSpriteNode } from './STUI';
 const { ccclass, property } = _decorator;
 
 @ccclass('HomeCanvasCC')
@@ -7,8 +7,21 @@ export class HomeCanvasCC extends Component {
 
     private spriteBGNode: STSpriteNode = new STSpriteNode()
     private iconBGNode: STSpriteNode = new STSpriteNode()
-    private buttonNode: STButtonNode = new STButtonNode()
-    private btnLabelNode: STLabelNode = new STLabelNode()
+
+    private sceneNames: string[] = [
+        "ActionArrive",
+        "BaseTube",
+        "PlaneWar",
+        "SheepStart",
+        "Audio",
+        "FlyKnife",
+        "RollBall",
+        "AngryBird",
+        "ItemTest",
+        "ItemTest",
+        "ItemTest",
+        "ItemTest",
+    ];
     __preload() {
         console.debug("HomeCanvasCC __preload")
         this.node.addChild(this.spriteBGNode)
@@ -28,19 +41,42 @@ export class HomeCanvasCC extends Component {
         this.iconBGNode.st_bottom = 0
         this.iconBGNode.loadDir("home/home_bg")
 
-        this.node.addChild(this.buttonNode)
-        this.buttonNode.sprite.sizeMode = Sprite.SizeMode.CUSTOM
-        this.buttonNode.st_width = 200
-        this.buttonNode.st_height = 80
-        this.buttonNode.loadDir("home/home_btn_bg")
-
-        this.buttonNode.addChild(this.btnLabelNode)
-        this.btnLabelNode.st_string = "案例1"
-        this.btnLabelNode.st_colorHexString = "#639F28"
-        this.btnLabelNode.st_fontSize = 30
-        this.btnLabelNode.setPosition(0, 4)
+        const layoutNode = new STLayoutNode()
+        layoutNode.st_width = 640
+        layoutNode.layout.type = Layout.Type.GRID
+        layoutNode.layout.resizeMode = Layout.ResizeMode.CONTAINER
+        layoutNode.layout.spacingX = 20
+        layoutNode.layout.spacingY = 20
+        this.node.addChild(layoutNode)
+        for (let index = 0; index < this.sceneNames.length; index++) {
+            layoutNode.addChild(this.initBtn(this.sceneNames[index]))
+        }
     }
 
+    initBtn(name): STButtonNode {
+        const buttonNode: STButtonNode = new STButtonNode(name)
+        buttonNode.sprite.sizeMode = Sprite.SizeMode.CUSTOM
+        buttonNode.st_width = 200
+        buttonNode.st_height = 80
+        buttonNode.loadDir("home/home_btn_bg")
+        buttonNode.on(Node.EventType.TOUCH_END, this.onClick, this)
+
+        const btnLabelNode: STLabelNode = new STLabelNode()
+        btnLabelNode.st_string = name
+        btnLabelNode.st_colorHexString = "#639F28"
+        btnLabelNode.st_fontSize = 30
+        btnLabelNode.setPosition(0, 4)
+        buttonNode.addChild(btnLabelNode)
+        return buttonNode
+    }
+
+    onClick(evt: EventTouch) {
+        const name = evt.currentTarget.name
+        console.log('name', name)
+        if (name.string !== 'ItemTest') {
+            director.loadScene(name)
+        }
+    }
     onLoad() {
         console.debug("HomeCanvasCC onLoad")
     }

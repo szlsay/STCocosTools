@@ -503,3 +503,19 @@ export class STSliderNode extends STNode {
         this.slider.node.on("slide", this.onSlideHandler, this);
     }
 }
+
+/**
+ * @zh Layout 组件
+ */
+@ccclass('STLayoutNode')
+export class STLayoutNode extends STNode {
+    /**
+     * @zh
+     * Layout 组件相当于一个容器，能自动对它的所有子节点进行统一排版。<br>
+     */
+    layout: Layout;
+    constructor(name?: string) {
+        super(name);
+        this.layout = this.addComponent(Layout).getComponent(Layout)
+    }
+}

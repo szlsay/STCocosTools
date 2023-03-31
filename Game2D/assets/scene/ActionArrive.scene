@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.SceneAsset",
-    "_name": "Home",
+    "_name": "ActionArrive",
     "_objFlags": 0,
     "_native": "",
     "scene": {
@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Scene",
-    "_name": "Home",
+    "_name": "ActionArrive",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -50,9 +50,9 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 9
+      "__id__": 8
     },
-    "_id": "f212beee-97a9-484f-bd87-c2a82010cbbf"
+    "_id": "2e205b0c-3c7f-4b6d-a05a-fc7811778f19"
   },
   {
     "__type__": "cc.Node",
@@ -76,15 +76,12 @@
       },
       {
         "__id__": 7
-      },
-      {
-        "__id__": 8
       }
     ],
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 360.00000000000006,
+      "x": 360,
       "y": 640,
       "z": 0
     },
@@ -245,8 +242,8 @@
     "__prefab": null,
     "_alignFlags": 45,
     "_target": null,
-    "_left": 5.684341886080802e-14,
-    "_right": 5.684341886080802e-14,
+    "_left": 0,
+    "_right": 0,
     "_top": 5.684341886080802e-14,
     "_bottom": 5.684341886080802e-14,
     "_horizontalCenter": 0,
@@ -264,35 +261,24 @@
     "_id": "c5V1EV8IpMtrIvY1OE9t2u"
   },
   {
-    "__type__": "e217bMr1klNrqxblEIYWcut",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "_id": "1aO5E9WsBPLpXH7fDV+0fi"
-  },
-  {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 10
+      "__id__": 9
     },
     "shadows": {
-      "__id__": 11
+      "__id__": 10
     },
     "_skybox": {
-      "__id__": 12
+      "__id__": 11
     },
     "fog": {
-      "__id__": 13
+      "__id__": 12
     },
     "octree": {
-      "__id__": 14
+      "__id__": 13
     },
     "lightProbeInfo": {
-      "__id__": 15
+      "__id__": 14
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false
@@ -320,14 +306,14 @@
       "x": 0,
       "y": 0,
       "z": 0,
-      "w": 1
+      "w": 0
     },
     "_groundAlbedo": {
       "__type__": "cc.Vec4",
       "x": 0,
       "y": 0,
       "z": 0,
-      "w": 1
+      "w": 0
     },
     "_skyColorLDR": {
       "__type__": "cc.Vec4",
