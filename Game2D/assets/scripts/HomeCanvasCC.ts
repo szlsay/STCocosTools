@@ -10,11 +10,11 @@ export class HomeCanvasCC extends Component {
 
     private sceneNames: string[] = [
         "ActionArrive",
+        "FlyKnife",
         "BaseTube",
         "PlaneWar",
         "SheepStart",
         "Audio",
-        "FlyKnife",
         "RollBall",
         "AngryBird",
         "ItemTest",
