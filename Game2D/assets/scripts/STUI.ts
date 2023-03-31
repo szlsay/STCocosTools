@@ -148,6 +148,20 @@ export class STSpriteNode extends STNode {
     sprite: Sprite;
 
     /**
+     * @en Main color for rendering, it normally multiplies with texture color.
+     * @zh 渲染颜色，一般情况下会和贴图颜色相乘。
+     */
+    get st_color(): Readonly<math.Color> {
+        return this.sprite.color
+    }
+    set st_color(value: Readonly<math.Color>) {
+        this.sprite.color = value
+    }
+    set st_colorHexString(value: string) {
+        this.sprite.color = new Color(value)
+    }
+
+    /**
      * @zh 设置SpriteFrame中的图片
      * @param path SpriteFrame路径
      */
@@ -156,6 +170,21 @@ export class STSpriteNode extends STNode {
             if (error) {
             } else {
                 this.sprite.spriteFrame = sprite
+            }
+        });
+    }
+
+    /**
+     * @zh 设置SpriteFrame中的图片
+     * @param path SpriteFrame路径
+     */
+    loadDir(path: string) {
+        resources.loadDir(path, SpriteFrame, (error: Error, spriteFrames: SpriteFrame[]) => {
+            if (error) {
+            } else {
+                if (spriteFrames.length === 1) {
+                    this.sprite.spriteFrame = spriteFrames[0]
+                }
             }
         });
     }
