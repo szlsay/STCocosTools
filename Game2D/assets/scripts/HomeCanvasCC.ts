@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Sprite, resources, SpriteFrame, Color, Layout, EventTouch, director } from 'cc';
+import { _decorator, Component, Node, Sprite, Layout, EventTouch, director } from 'cc';
 import { STButtonNode, STLabelNode, STLayoutNode, STSpriteNode } from './STUI';
 const { ccclass, property } = _decorator;
 

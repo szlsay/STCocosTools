@@ -1,39 +1,21 @@
-import { _decorator, Component, Node, director, Sprite, Scene, SceneAsset, EventTouch, v2, v3, UITransform, tween, Vec3, view } from 'cc';
-import { STSteeredVehicle } from './STSteeredVehicle';
-import { STButtonNode, STNode, STSpriteNode } from './STUI';
+import { _decorator, Node, v2, v3, tween, Vec3, view } from 'cc';
+import { STController } from './STController';
+import { STNode, STSpriteNode } from './STUI';
 const { ccclass, property } = _decorator;
 
 const _temp_v2 = v2()
 const _temp_v3 = v3()
 
 @ccclass('FlyKnifeCanvasCC')
-export class FlyKnifeCanvasCC extends Component {
-
-    private spriteBGNode: STSpriteNode = new STSpriteNode()
+export class FlyKnifeCanvasCC extends STController {
     private targetNode: STSpriteNode = new STSpriteNode()
     private knifeNode: STSpriteNode = new STSpriteNode()
     private knifeContainerNode: STNode = new STNode()
     private knifeNodeArray = [];
-    canThrow = true;
+    private canThrow = true;
 
     __preload() {
-        this.node.addChild(this.spriteBGNode)
-        this.spriteBGNode.sprite.sizeMode = Sprite.SizeMode.CUSTOM
-        this.spriteBGNode.st_left = 0
-        this.spriteBGNode.st_right = 0
-        this.spriteBGNode.st_top = 0
-        this.spriteBGNode.st_bottom = 0
-        this.spriteBGNode.st_colorHexString = "#CBFF8D"
-        this.spriteBGNode.loadDir("home/default_sprite")
-
-        console.debug("FlyKnifeCanvasCC __preload")
-        const backBtnNode: STButtonNode = new STButtonNode()
-        backBtnNode.loadDir("back")
-        backBtnNode.st_left = 20
-        backBtnNode.st_top = 20
-        backBtnNode.on(Node.EventType.TOUCH_END, this.onClickBack, this)
-        this.node.addChild(backBtnNode)
-
+        super.__preload()
         this.knifeNode.loadDir("flyknife/knife")
         this.knifeNode.setPosition(0, -500)
         this.knifeContainerNode.addChild(this.knifeNode)
@@ -42,8 +24,6 @@ export class FlyKnifeCanvasCC extends Component {
         this.targetNode.loadDir("flyknife/target")
         this.targetNode.setPosition(0, 300)
         this.node.addChild(this.targetNode)
-
-
     }
 
     onLoad() {
@@ -126,15 +106,6 @@ export class FlyKnifeCanvasCC extends Component {
                 }
             })
             .start();
-    }
-
-    onClickBack() {
-        director.preloadScene("Home", (completedCount: number, totalCount: number, item: any) => {
-            console.log("preloadScene", completedCount, totalCount, item)
-        }, (error: null | Error, sceneAsset?: SceneAsset) => {
-            console.log("preloadScene", error, sceneAsset)
-            director.loadScene("Home")
-        })
     }
 }
 

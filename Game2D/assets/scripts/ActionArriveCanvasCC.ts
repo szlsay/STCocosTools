@@ -1,38 +1,20 @@
-import { _decorator, Component, Node, director, Sprite, Scene, SceneAsset, EventTouch, v2, v3, UITransform } from 'cc';
+import { _decorator, Node, EventTouch, v2, v3, UITransform } from 'cc';
+import { STController } from './STController';
 import { STSteeredVehicle } from './STSteeredVehicle';
-import { STButtonNode, STSpriteNode } from './STUI';
+import { STSpriteNode } from './STUI';
 const { ccclass, property } = _decorator;
 
 const _temp_v2 = v2()
 const _temp_v3 = v3()
 
 @ccclass('ActionArriveCanvasCC')
-export class ActionArriveCanvasCC extends Component {
-
-
-    private spriteBGNode: STSpriteNode = new STSpriteNode()
+export class ActionArriveCanvasCC extends STController {
     private targetNode: STSpriteNode = new STSpriteNode()
     private bulletNode: STSpriteNode = new STSpriteNode()
     private seeker: STSteeredVehicle
 
     __preload() {
-        this.node.addChild(this.spriteBGNode)
-        this.spriteBGNode.sprite.sizeMode = Sprite.SizeMode.CUSTOM
-        this.spriteBGNode.st_left = 0
-        this.spriteBGNode.st_right = 0
-        this.spriteBGNode.st_top = 0
-        this.spriteBGNode.st_bottom = 0
-        this.spriteBGNode.st_colorHexString = "#CBFF8D"
-        this.spriteBGNode.loadDir("home/default_sprite")
-
-        console.debug("ActionArriveCanvasCC __preload")
-        const backBtnNode: STButtonNode = new STButtonNode()
-        backBtnNode.loadDir("back")
-        backBtnNode.st_left = 20
-        backBtnNode.st_top = 20
-        backBtnNode.on(Node.EventType.TOUCH_END, this.onClickBack, this)
-        this.node.addChild(backBtnNode)
-
+        super.__preload()
         this.node.addChild(this.targetNode)
         this.targetNode.loadDir("actionArrive/target")
 
@@ -62,15 +44,6 @@ export class ActionArriveCanvasCC extends Component {
         _temp_v2.set(this.targetNode.position.x, this.targetNode.position.y)
         this.seeker.arrive(_temp_v2)
         this.seeker.fixedUpdate()
-    }
-
-    onClickBack() {
-        director.preloadScene("Home", (completedCount: number, totalCount: number, item: any) => {
-            console.log("preloadScene", completedCount, totalCount, item)
-        }, (error: null | Error, sceneAsset?: SceneAsset) => {
-            console.log("preloadScene", error, sceneAsset)
-            director.loadScene("Home")
-        })
     }
 }
 
